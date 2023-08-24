@@ -31,7 +31,9 @@
                             <div class="col">
                                 <div class="form-gp">
                                     <label for="exampleInputEmail1">Email</label>
-                                    <input type="text" id="exampleInputEmail1" name="email">
+                                    <input type="text" id="exampleInputEmail1" name="email" class="@error('email') is-invalid @enderror
+
+                                    @enderror">
                                     <i class="ti-email"></i>
                                     <div class="text-danger"></div>
                                     @error('email')
