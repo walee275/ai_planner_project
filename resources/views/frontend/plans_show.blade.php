@@ -20,11 +20,11 @@
 
 @section('content')
 
-<div class="row">
-    <div class="col " style="text-align: end;">
-        <a href="{{ route('homepage') }}" class="btn">Back</a>
+    <div class="row">
+        <div class="col " style="text-align: end;">
+            <a href="{{ route('homepage') }}" class="btn">Back</a>
+        </div>
     </div>
-</div>
     <div class="row">
 
         <div class="col text-center">
@@ -35,25 +35,38 @@
                     <h4>{{ $plan->title }}</h4>
                     <div class="tasks-list-container">
                         @if (count($plan->tasks))
-                            @foreach ($plan->tasks as $task)
-                            <div class="d-flex justify-between">
-                                <span>{{ $task->created_at->format('Y-m-d,H:i:s') }}</span>
-                                <span class="ml-5"> {{ $task->title }}</span>
-                            </div>
-                        @endforeach
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S R No.</th>
+                                        <th>Task</th>
+                                        <th>Date Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($plan->tasks as $task)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $task->title }}</td>
+                                            <td>{{ $task->created_at->format('Y-m-d,H:i:s') }}</td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
                         @else
-                        {!! $plan->description !!}
+                            {!! $plan->description !!}
                         @endif
 
                     </div>
                 @endforeach
             @else
-            <div class="row">
-                <div class="col text-center">
-                    <p class="text-white">No Plans Found</p>
+                <div class="row">
+                    <div class="col text-center">
+                        <p class="text-white">No Plans Found</p>
 
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>
