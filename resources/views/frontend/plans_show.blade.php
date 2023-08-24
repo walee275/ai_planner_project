@@ -34,16 +34,26 @@
                 @foreach ($plans as $plan)
                     <h4>{{ $plan->title }}</h4>
                     <div class="tasks-list-container">
-                        @foreach ($plan->tasks as $task)
+                        @if (count($plan->tasks))
+                            @foreach ($plan->tasks as $task)
                             <div class="d-flex justify-between">
                                 <span>{{ $task->created_at->format('Y-m-d,H:i:s') }}</span>
                                 <span class="ml-5"> {{ $task->title }}</span>
                             </div>
                         @endforeach
+                        @else
+                        {!! $plan->description !!}
+                        @endif
+
                     </div>
                 @endforeach
             @else
+            <div class="row">
+                <div class="col text-center">
+                    <p class="text-white">No Plans Found</p>
 
+                </div>
+            </div>
             @endif
         </div>
     </div>

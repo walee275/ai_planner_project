@@ -18,7 +18,6 @@ yarn-error.log
 /.idea
 /.vscode
 tests/Feature/NewMessageListenerTest.php
-app/Providers/EventServiceProvider.php
 app/Models/Message.php
 app/Listeners/NewMessageListener.php
 app/Http/Controllers/MessageController.php

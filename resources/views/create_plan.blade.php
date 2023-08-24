@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="card bg-transparent">
                             <div class="card-body">
-                                <form>
+                                <form id="prompt_submit">
                                     <div class="form-group">
                                         <label for="userPrompt">Enter User Prompt:</label>
                                         <textarea class="form-control" id="userPrompt" rows="3"></textarea>
@@ -43,6 +43,27 @@
                 e.preventDefault();
 
                 $('#display_response').val($(this).val());
+            })
+
+            $('#prompt_submit').submit(function(e){
+                e.preventDefault();
+
+                const data = {
+                    prompt:$(this).find('#userPrompt').val(),
+                }
+                fetch('http://localhost/chatbot_openai/public/prompt/search/test',
+                {
+                    method:'POST',
+                    body:JSON.stringify(data),
+                    headers:{
+                        'Content-Type': 'application/json',
+                    }
+                }).then(function(response){
+                    return response.json();
+                }).then(function(result){
+                    console.log(result.content.replace(/\\n\\n|\r\r|\\ /g, ''));
+
+                });
             })
         });
     </script>

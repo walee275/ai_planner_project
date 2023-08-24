@@ -31,11 +31,11 @@ use App\Http\Controllers\PlanController;
 
 
 
-Route::controller(HomeController::class)->middleware(Authenticate::class)->group(function () {
+// Route::controller(HomeController::class)->middleware(Authenticate::class)->group(function () {
 
-    Route::get('/', 'home')->name('home');
-    // Route::get('/home', 'home')->name('homepage');
-});
+//     Route::get('/', 'home')->name('home');
+//     // Route::get('/home', 'home')->name('homepage');
+// });
 
 // Auth Routes::
 Route::get('logout', [AuthController::class, 'logout'])->name('logout')->middleware(Authenticate::class);
@@ -61,38 +61,38 @@ Route::controller(AuthController::class)->middleware(RedirectIfAuthenticated::cl
 
 
 
-// Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(function () {
 
-//     Route::controller(AdminDashboardController::class)->group(function () {
-//         Route::get('/', 'index')->name('dashboard');
-//     });
+    Route::controller(AdminDashboardController::class)->group(function () {
+        Route::get('/', 'index')->name('dashboard');
+    });
 
-//     Route::controller(RoleController::class)->middleware('permission:manage roles and permissions')->group(function () {
-//         Route::get('/roles', 'index')->middleware('permission:read roles')->name('roles');
-//         Route::get('/roles/create', 'create')->middleware('permission:create role')->name('roles.create');
-//         Route::post('/roles/create', 'store')->middleware('permission:create role');
-//         Route::get('/role/update/{role}', 'edit')->middleware('permission:edit role')->name('roles.update');
-//         Route::post('/role/update/{role}', 'update')->middleware('permission:edit role');
-//         Route::get('/role/delete/{role}', 'destroy')->middleware('permission:delete roles')->name('roles.delete');
-//     });
-//     Route::controller(PermissionController::class)->middleware('permission:manage roles and permissions')->group(function () {
-//         Route::get('/permissions', 'index')->middleware('permission:read permissions')->name('permissions');
-//         Route::get('/permissions/create', 'create')->middleware('permission:create permission')->name('permissions.create');
-//         Route::post('/permissions/create', 'store')->middleware('permission:create permission');
-//         Route::get('/permission/update/{permission}', 'edit')->middleware('permission:edit permission')->name('permissions.update');
-//         Route::post('/permission/update/{permission}', 'update')->middleware('permission:edit permission');
-//         Route::get('/permission/delete/{permission}', 'destroy')->middleware('permission:delete permission')->name('permissions.delete');
-//     });
+    Route::controller(RoleController::class)->middleware('permission:manage roles and permissions')->group(function () {
+        Route::get('/roles', 'index')->middleware('permission:read roles')->name('roles');
+        Route::get('/roles/create', 'create')->middleware('permission:create role')->name('roles.create');
+        Route::post('/roles/create', 'store')->middleware('permission:create role');
+        Route::get('/role/update/{role}', 'edit')->middleware('permission:edit role')->name('roles.update');
+        Route::post('/role/update/{role}', 'update')->middleware('permission:edit role');
+        Route::get('/role/delete/{role}', 'destroy')->middleware('permission:delete roles')->name('roles.delete');
+    });
+    Route::controller(PermissionController::class)->middleware('permission:manage roles and permissions')->group(function () {
+        Route::get('/permissions', 'index')->middleware('permission:read permissions')->name('permissions');
+        Route::get('/permissions/create', 'create')->middleware('permission:create permission')->name('permissions.create');
+        Route::post('/permissions/create', 'store')->middleware('permission:create permission');
+        Route::get('/permission/update/{permission}', 'edit')->middleware('permission:edit permission')->name('permissions.update');
+        Route::post('/permission/update/{permission}', 'update')->middleware('permission:edit permission');
+        Route::get('/permission/delete/{permission}', 'destroy')->middleware('permission:delete permission')->name('permissions.delete');
+    });
 
-//     Route::controller(UserController::class)->middleware('permission:manage users')->group(function () {
-//         Route::get('/users', 'index')->middleware('permission:read users')->name('users');
-//         Route::get('/user/create', 'create')->middleware('permission:create user')->name('user.create');
-//         Route::post('/user/create', 'store')->middleware('permission:create user');
-//         Route::get('/user/update/{user}', 'edit')->middleware('permission:edit user')->name('user.update');
-//         Route::post('/user/update/{user}', 'update')->middleware('permission:edit user');
-//         Route::get('/user/delete/{user}', 'destroy')->middleware('permission:delete user')->name('user.delete');
-//     });
-// });
+    Route::controller(UserController::class)->middleware('permission:manage users')->group(function () {
+        Route::get('/users', 'index')->middleware('permission:read users')->name('users');
+        Route::get('/user/create', 'create')->middleware('permission:create user')->name('user.create');
+        Route::post('/user/create', 'store')->middleware('permission:create user');
+        Route::get('/user/update/{user}', 'edit')->middleware('permission:edit user')->name('user.update');
+        Route::post('/user/update/{user}', 'update')->middleware('permission:edit user');
+        Route::get('/user/delete/{user}', 'destroy')->middleware('permission:delete user')->name('user.delete');
+    });
+});
 
 
 Route::controller(PlanController::class)->middleware(Authenticate::class)->group(function () {

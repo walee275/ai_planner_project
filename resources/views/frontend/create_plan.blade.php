@@ -21,25 +21,22 @@
         }
     </style>
 @endsection
-
 @section('content')
-<div class="row">
-    <div class="col text-end" style="text-align: end;">
-        <a href="{{ route('homepage') }}" class="btn">Back</a>
+    <div class="row">
+        <div class="col text-end" style="text-align: end;">
+            <a href="{{ route('homepage') }}" class="btn">Back</a>
+        </div>
     </div>
-</div>
     <div id="data_container" class="p-3">
         <div class="row " style="margin-top: rem!important;">
             <div class="col">
-                <textarea class="form-control textarea" rows="2" id="userPrompt" disabled placeholder="Input 1"
-                    style="font-size: small;">i want to create a social media campaign to drive traffic to my website for our new product</textarea>
+                <textarea class="form-control textarea" rows="2" id="userPrompt" placeholder="Create a plan for a social media campaign to drive traffic to my website for my new product" style="font-size: small;"></textarea>
 
             </div>
         </div>
         <div class="row mt-3">
             <div class="col">
-                <button type="button" class="w-100 btn "
-                    style="">
+                <button type="button" class="w-100 btn " style="" id="prompt_submit">
                     Submit</button>
             </div>
         </div>
@@ -79,94 +76,74 @@
 
 @section('scripts')
     <script>
+        let tasks = [];
         $(document).ready(function() {
 
-            // $('#userPrompt').on('input', function(e) {
-            //     e.preventDefault();
 
-            //     $('#display_response').val($(this).val());
-            // })
             const userPrompt = $('#userPrompt').val();
-            console.log(userPrompt);
-            const socialMediaCampaignPlan = [{
-                    task: "Define Goals and Objectives",
-                    description: "Clearly outline the goals of your campaign, such as increasing website traffic, generating leads, or promoting specific content.",
-                },
-                {
-                    task: "Identify Target Audience",
-                    description: "Research and define your ideal audience's demographics, interests, and online behavior to tailor your campaign.",
-                },
-                {
-                    task: "Choose Social Media Platforms",
-                    description: "Select the most relevant platforms based on your target audience. Consider platforms like Instagram, Facebook, Twitter, LinkedIn, etc.",
-                },
-                {
-                    task: "Content Strategy",
-                    description: "Develop a content strategy that includes a mix of engaging content types, such as articles, videos, infographics, and user-generated content.",
-                },
-                {
-                    task: "Content Calendar",
-                    description: "Create a content calendar to schedule and organize your posts. Consistency is key to maintaining audience engagement.",
-                },
-                {
-                    task: "Hashtag Strategy",
-                    description: "Research and incorporate relevant hashtags to increase the visibility of your posts and reach a wider audience.",
-                },
-                {
-                    task: "Influencer Collaboration",
-                    description: "Identify influencers or industry experts who can promote your campaign to their followers, expanding your reach.",
-                },
-                {
-                    task: "Engagement Plan",
-                    description: "Outline how you'll engage with your audience through comments, likes, shares, and direct messages to build relationships.",
-                },
-                {
-                    task: "Paid Advertising",
-                    description: "Allocate a budget for targeted ads on social media platforms to reach a larger audience and drive traffic.",
-                },
-                {
-                    task: "Analytics and Tracking",
-                    description: "Set up tracking tools to monitor the performance of your campaign. Measure metrics like clicks, conversions, and engagement.",
-                },
-                {
-                    task: "User-Generated Content",
-                    description: "Encourage your followers to create content related to your campaign, showcasing their experiences and opinions.",
-                },
-                {
-                    task: "Contests and Giveaways",
-                    description: "Run contests or giveaways to incentivize engagement and participation, directing participants to your website.",
-                },
-                {
-                    task: "Optimize Landing Pages",
-                    description: "Ensure that the landing pages you're driving traffic to are optimized for conversions and provide a seamless user experience.",
-                },
-                {
-                    task: "A/B Testing",
-                    description: "Experiment with different content, posting times, and ad formats to refine your strategy based on data-driven insights.",
-                },
-                {
-                    task: "Monitor and Adjust",
-                    description: "Regularly review campaign performance and make necessary adjustments to achieve your goals effectively.",
-                },
-            ];
-
-
-
             const responseContainer = $('#response_container');
 
-            const orderedList = $('<ol></ol>');
+            $('#prompt_submit').click(function(e) {
+                e.preventDefault();
+                tasks = [];
+                const data = {
+                    prompt: $('#userPrompt').val(),
+                }
+                // fetch('http://localhost/chatbot_openai/public/prompt/search/test', {
+                fetch('{{ route('request_gpt') }}', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                }).then(function(response) {
+                    return response.json();
+                }).then(function(result) {
+                    console.log(result);
+                    result = result.content.replace(/\\n\\n|\r\r|\\ /g, '');
+                    // result = JSON.parse(result);
+                    // console.log(result);
+                    $('#response_container').html(result);
+                    $("#response_container li").each(function() {
+                        // Extract the text from the <b> tag
+                        const taskText = $(this).find("b").text().trim();
 
-            $.each(socialMediaCampaignPlan, function(index, task) {
-                const listItem = $('<li class="mb-2"></li>').html(
-                    ` <strong>${task.task}</strong>: ${task.description}`);
-                orderedList.append(listItem);
-            });
+                        // Extract the remaining text (description)
+                        const descriptionText = $(this).clone().children().remove().end()
+                            .text().trim();
 
-            responseContainer.append(orderedList);
+                        // Append to the tasks array
+                        tasks.push({
+                            task: taskText,
+                            description: descriptionText
+                        });
+                    });
+                    //  const tasks =JSON.parse(result.content.tasks);
+                    //  console.log(tasks);
 
 
 
-            $('#createPlanButton').on('click', function() {
+                    // const orderedList = $('<ol></ol>');
+
+                    // $.each(socialMediaCampaignPlan.tasks, function(index, task) {
+                    //     const listItem = $('<li class="mb-2"></li>').html(
+                    //         ` <strong>${task.task}</strong>: ${task.description}`);
+                    //     orderedList.append(listItem);
+                    // });
+
+                    // responseContainer.append(orderedList);
+                    // console.log();
+
+                });
+            })
+
+
+
+
+
+
+
+            $('#createTaskButton').on('click', function() {
                 const userPromptText = $('#userPrompt').val();
                 const userPromptElement = $(
                     '<h4 class="mb-3 text-white" style=""></h4>').text(
@@ -178,17 +155,17 @@
 
                 let taskTextareas = '';
 
-                $.each(socialMediaCampaignPlan, function(index, task) {
+                $.each(tasks, function(index, task) {
                     taskTextareas +=
-                        `<label><b>${index+1} :</b>${task.task}</label><textarea class="form-control textarea" rows="3" disabled>${task.description}</textarea>`;
+                        `<label class="text-white"><b>${index+1} :</b>${task.task}</label><textarea class="form-control textarea" rows="3" disabled>${task.description}</textarea>`;
                     // taskTextareas.push(taskTextarea);
                 });
                 taskTextareas +=
-                    '<div class="row mt-3 mb-4 "> <div class="col text-center"><a href="{{ route('show.plans') }}" class="btn " id="save_tasks_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Tasks</a></div>  </div>'
+                    `<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_tasks_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Tasks</button></div>  </div>`
                 $('#data_container').append(taskTextareas);
             });
 
-            $('#createTaskButton').on('click', function() {
+            $('#createPlanButton').on('click', function() {
                 const userPromptText = $('#userPrompt').val();
                 const userPromptElement = $(
                     '<h4 class="mb-3 text-white" style=""></h4>').text(
@@ -198,40 +175,73 @@
 
                 const responseContainer = $('#response_container');
                 // $('#data_container')
-                let orderedList = $('<ol style="background: lightgray;padding: 27px;border-radius: 10px;max-height: 276px;overflow-y: auto;"></ol>');
+                let orderedList = $(
+                    '<ol style="background: lightgray;padding: 27px;border-radius: 10px;max-height: 276px;overflow-y: auto;"></ol>'
+                );
 
-                $.each(socialMediaCampaignPlan, function(index, task) {
+                $.each(tasks, function(index, task) {
                     let item = $('<li class="mb-2"></li>').html(
-                    ` <strong>${task.task}</strong>: ${task.description}`);
+                        ` <strong>${task.task}</strong>: ${task.description}`);
                     orderedList.append(item);
                 });
+
                 $('#data_container').append(orderedList);
+                $('#data_container').append(`<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_plan_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Plan</button></div>  </div>`);
             });
 
-            const data = {
-                plan: userPrompt,
-                tasks: socialMediaCampaignPlan
-            };
 
-            // $(document).on('click', '#save_tasks_btn', function(e) {
-            //     e.preventDefault();
 
-            //     // $.ajax({
-            //     //     url: "{{ route('create_plan') }}", // Replace with your API URL
-            //     //     method: "POST",
-            //     //     data: JSON.stringify(data),
-            //     //     contentType: "application/json",
-            //     //     success: function(data) {
-            //     //         if (data.success) {
-            //     //             alert(data.message);
-            //     //         }
-            //     //         console.log(data);
-            //     //     },
-            //     //     error: function(xhr, status, error) {
-            //     //         console.error("Error:", error);
-            //     //     }
-            //     // });
-            // })
+            $(document).on('click', '#save_tasks_btn', function(e) {
+                e.preventDefault();
+
+                console.log();
+                const data = {
+                    plan: $(this).data('plan'),
+                    tasksList: tasks,
+                    user:'{{ Auth::id() }}'
+                };
+                console.log($(this).data('plan'));
+                $.ajax({
+                    url: "{{ route('create_tasks') }}", // Replace with your API URL
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function(data) {
+                        if (data.success) {
+                            window.location = '{{ route('show.plans') }}';
+
+                        }
+                        console.log(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            })
+
+            $(document).on('click', '#save_plan_btn', function(e) {
+                e.preventDefault();
+
+                const data = {
+                    plan: $(this).data('plan'),
+                    tasksList: tasks,
+                    user:'{{ Auth::id() }}'
+                };
+                console.log(data);
+                $.ajax({
+                    url: "{{ route('create_plan') }}", // Replace with your API URL
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
+                    success: function(data) {
+                        // window.location = '{{ route('show.plans') }}';
+                        console.log(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error:", error);
+                    }
+                });
+            })
         });
     </script>
 @endsection
