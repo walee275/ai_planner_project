@@ -30,14 +30,16 @@
     <div id="data_container" class="p-3">
         <div class="row " style="margin-top: rem!important;">
             <div class="col">
-                <textarea class="form-control textarea" rows="2" id="userPrompt" placeholder="Create a plan for a social media campaign to drive traffic to my website for my new product" style="font-size: small;"></textarea>
+                <textarea class="form-control textarea" rows="2" id="userPrompt"
+                    placeholder="Create a plan for a social media campaign to drive traffic to my website for my new product"
+                    style="font-size: small;"></textarea>
 
             </div>
         </div>
         <div class="row mt-3">
             <div class="col">
                 <button type="button" class="w-100 btn " style="" id="prompt_submit">
-                    Submit</button>
+                    Creeate Plan</button>
             </div>
         </div>
         <div class="row" style="margin-top: 6%;">
@@ -89,6 +91,8 @@
                 const data = {
                     prompt: $('#userPrompt').val(),
                 }
+                const btn = $(this);
+                $(this).text('Loading...');
                 // fetch('http://localhost/chatbot_openai/public/prompt/search/test', {
                 fetch('{{ route('request_gpt') }}', {
                     method: 'POST',
@@ -99,8 +103,11 @@
                 }).then(function(response) {
                     return response.json();
                 }).then(function(result) {
-                    console.log(result);
+                    // console.log(result);
+                    btn.text('Create Plan');
+
                     result = result.content.replace(/\\n\\n|\r\r|\\ /g, '');
+
                     // result = JSON.parse(result);
                     // console.log(result);
                     $('#response_container').html(result);
@@ -143,7 +150,7 @@
 
 
 
-            $('#createTaskButton').on('click', function() {
+            $('#createPlanButton').on('click', function() {
                 const userPromptText = $('#userPrompt').val();
                 const userPromptElement = $(
                     '<h4 class="mb-3 text-white" style=""></h4>').text(
@@ -161,11 +168,11 @@
                     // taskTextareas.push(taskTextarea);
                 });
                 taskTextareas +=
-                    `<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_tasks_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Tasks</button></div>  </div>`
+                    `<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_plan_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Tasks</button></div>  </div>`
                 $('#data_container').append(taskTextareas);
             });
 
-            $('#createPlanButton').on('click', function() {
+            $('#createTaskButton').on('click', function() {
                 const userPromptText = $('#userPrompt').val();
                 const userPromptElement = $(
                     '<h4 class="mb-3 text-white" style=""></h4>').text(
@@ -186,7 +193,9 @@
                 });
 
                 $('#data_container').append(orderedList);
-                $('#data_container').append(`<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_plan_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Plan</button></div>  </div>`);
+                $('#data_container').append(
+                    `<div class="row mt-3 mb-4 "> <div class="col text-center"><button class="btn " data-plan="${userPromptText}" id="save_tasks_btn" style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Save Plan</button></div>  </div>`
+                    );
             });
 
 
@@ -194,11 +203,11 @@
             $(document).on('click', '#save_tasks_btn', function(e) {
                 e.preventDefault();
 
-                console.log();
+                // console.log();
                 const data = {
                     plan: $(this).data('plan'),
                     tasksList: tasks,
-                    user:'{{ Auth::id() }}'
+                    user: '{{ Auth::id() }}'
                 };
                 console.log($(this).data('plan'));
                 $.ajax({
@@ -211,7 +220,7 @@
                             window.location = '{{ route('show.plans') }}';
 
                         }
-                        console.log(data);
+                        // console.log(data);
                     },
                     error: function(xhr, status, error) {
                         console.error("Error:", error);
@@ -225,7 +234,7 @@
                 const data = {
                     plan: $(this).data('plan'),
                     tasksList: tasks,
-                    user:'{{ Auth::id() }}'
+                    user: '{{ Auth::id() }}'
                 };
                 console.log(data);
                 $.ajax({
@@ -234,8 +243,8 @@
                     data: JSON.stringify(data),
                     contentType: "application/json",
                     success: function(data) {
-                        // window.location = '{{ route('show.plans') }}';
-                        console.log(data);
+                        window.location = '{{ route('show.plans') }}';
+                        // console.log(data);
                     },
                     error: function(xhr, status, error) {
                         console.error("Error:", error);
