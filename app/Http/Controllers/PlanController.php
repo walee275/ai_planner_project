@@ -97,7 +97,7 @@ class PlanController extends Controller
      * Display the specified resource.
      */
 
-    public function create_tasks(Request $request)
+    public function create_plan(Request $request)
     {
 
         // return response()->json($request->all());
@@ -140,7 +140,7 @@ class PlanController extends Controller
     }
 
 
-    public function create_plan(Request $request){
+    public function create_tasks(Request $request){
 
         $plan_title = $request->plan;
         $plan_description ='';
@@ -149,7 +149,7 @@ class PlanController extends Controller
 
             foreach($request->tasksList as $task){
 
-                $plan_description .= '<li class="mb-2"><strong>'.$task['task'].'</strong>'.$task['description'].'</li>';
+                $plan_description .= '<li class="mb-2 tasks_rows" data-taskTitle="'.$task['task'].'" data-taskDesc="'.$task['description'].'"><strong>'.$task['task'].'</strong>'.$task['description'].'</li>';
 
             }
 
