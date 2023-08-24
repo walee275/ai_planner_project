@@ -9,7 +9,7 @@
 
 
         <div class="mobile-screen " id="mobile_screen_container">
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col" style="text-align: end;">
                     @if (Auth::user())
                         <a href="{{ route('logout') }}" class="btn">Logout</a>
