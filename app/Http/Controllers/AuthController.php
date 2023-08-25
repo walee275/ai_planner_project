@@ -59,7 +59,7 @@ class AuthController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|unique:users,email',
-            'password' => 'required|min:3',
+            'password' => 'required|min:6',
         ]);
 
         $user = User::create([
@@ -71,7 +71,7 @@ class AuthController extends Controller
         if ($user) {
             $user->assignRole('user');
             Auth::login($user);
-            return redirect()->route('homepage');
+            return redirect()->route('show.plans');
         } else {
             return redirect()->back()->with('error', 'Failed to register');
         }
