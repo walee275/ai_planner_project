@@ -36,7 +36,7 @@
 
     <div class="row">
 
-        <div class="col text-center" id="data_container">
+        <div class="col p-5" id="data_container">
 
 
             @if (count($plans))
@@ -78,7 +78,12 @@
                     </div>
                 </div>
             @endif
-
+            <div class="row">
+                <div class="col " style="">
+                    <button class="btn  mt-2 ml-2" id="back_btn">
+                        Create New Plan </button>
+                </div>
+            </div>
 
 
 
@@ -86,12 +91,7 @@
         </div>
 
     </div>
-    <div class="row">
-        <div class="col text-left" style="">
-            <button class="btn  mt-2" id="back_btn">
-                Create New Plan </button>
-        </div>
-    </div>
+
 @endsection
 
 

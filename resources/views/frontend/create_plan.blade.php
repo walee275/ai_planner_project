@@ -23,7 +23,7 @@
 @endsection
 @section('content')
     <div class="row">
-        <div class="col text-end" style="text-align: end;">
+        <div class="col text-right pr-4">
             <a href="{{ route('homepage') }}" class="btn">Back</a>
         </div>
     </div>
@@ -39,10 +39,10 @@
         <div class="row mt-3">
             <div class="col">
                 <button type="button" class="w-100 btn " style="" id="prompt_submit">
-                    Creeate Plan</button>
+                    Submit</button>
             </div>
         </div>
-        <div class="row" style="margin-top: 6%;">
+        <div class="row mt-3" style="">
 
             <div class="col">
                 <div class="response_container p-2 py-3" id="response_container"></div>
@@ -53,13 +53,13 @@
         <div class="row mt-2">
             <div class="col text-center">
                 <button type="button" class="btn" id="createPlanButton"
-                    style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Create
+                    style="">Create
                     Plan
                 </button>
             </div>
             <div class="col text-center">
                 <button type="button" class="btn" id="createTaskButton"
-                    style="background: #5ce1e6 !important;border-radius:21px;height:35px; color:white;">Create
+                    style="">Create
                     Task
                 </button>
 
@@ -67,7 +67,7 @@
         </div>
         <div class="row mt-4">
             <div class="col text-center">
-                <p>We need permissions for the service you use <br>
+                {{-- <p>We need permissions for the service you use <br> --}}
                     <a href="#" class="text-white">learn more</a>
                 </p>
             </div>
@@ -88,12 +88,15 @@
             $('#prompt_submit').click(function(e) {
                 e.preventDefault();
                 tasks = [];
+                if($(this).val() == '' || $(this).val() === undefined) {
+                    $('#response_container').text('You cannot submit empty plan!');
+                    return;
+                }
                 const data = {
                     prompt: $('#userPrompt').val(),
                 }
                 const btn = $(this);
                 $(this).text('Loading...');
-                // fetch('http://localhost/chatbot_openai/public/prompt/search/test', {
                 fetch('{{ route('request_gpt') }}', {
                     method: 'POST',
                     body: JSON.stringify(data),
@@ -104,12 +107,10 @@
                     return response.json();
                 }).then(function(result) {
                     // console.log(result);
-                    btn.text('Create Plan');
+                    btn.text('Submit');
 
                     result = result.content.replace(/\\n\\n|\r\r|\\ /g, '');
 
-                    // result = JSON.parse(result);
-                    // console.log(result);
                     $('#response_container').html(result);
                     $("#response_container li").each(function() {
                         // Extract the text from the <b> tag
@@ -125,22 +126,6 @@
                             description: descriptionText
                         });
                     });
-                    //  const tasks =JSON.parse(result.content.tasks);
-                    //  console.log(tasks);
-
-
-
-                    // const orderedList = $('<ol></ol>');
-
-                    // $.each(socialMediaCampaignPlan.tasks, function(index, task) {
-                    //     const listItem = $('<li class="mb-2"></li>').html(
-                    //         ` <strong>${task.task}</strong>: ${task.description}`);
-                    //     orderedList.append(listItem);
-                    // });
-
-                    // responseContainer.append(orderedList);
-                    // console.log();
-
                 });
             })
 

@@ -35,8 +35,7 @@
             background-color: hsl(189.1deg 100% 34.9% / 96%);
             width: 80%;
             max-width: 400px;
-            max-height: 702px;
-            padding: 23px;
+            height: 100vh;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
             font-size: small;
@@ -50,6 +49,7 @@
             background: #5ce1e6 !important;
             border-radius: 21px !important;
             color: white !important;
+            height: fit-content;
         }
     </style>
     @yield('styles')
