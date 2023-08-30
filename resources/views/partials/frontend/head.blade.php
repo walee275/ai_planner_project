@@ -20,6 +20,8 @@
         .container {
             display: flex;
             justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
         }
 
 
@@ -33,8 +35,8 @@
         .mobile-screen {
             margin-top: 0;
             background-color: hsl(189.1deg 100% 34.9% / 96%);
-            width: 80%;
-            max-width: 400px;
+            width: 100%;
+            /* max-width: 400px; */
             height: 100vh;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, .1);
@@ -45,11 +47,20 @@
             /* text-align: center; */
         }
 
+        .mobile-screen .row {
+            margin-right:0;
+        }
+
         .btn {
             background: #5ce1e6 !important;
             border-radius: 21px !important;
             color: white !important;
             height: fit-content;
+        }
+
+
+        @media only screen and (min-width:300px){
+
         }
     </style>
     @yield('styles')
