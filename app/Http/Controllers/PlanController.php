@@ -181,7 +181,7 @@ class PlanController extends Controller
 
     public function show(Plan $plan)
     {
-        $plans = Plan::with('tasks')->where('user_id', Auth::id())->get();
+        $plans = Plan::with('tasks')->where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
 
         return view('frontend.plans_show', compact('plans'));
     }
