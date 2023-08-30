@@ -88,7 +88,7 @@
             $('#prompt_submit').click(function(e) {
                 e.preventDefault();
                 tasks = [];
-                if($(this).val() == '' || $(this).val() === undefined) {
+                if($(userPrompt).val() == '' || $(userPrompt).val() === undefined) {
                     $('#response_container').text('You cannot submit empty plan!');
                     return;
                 }

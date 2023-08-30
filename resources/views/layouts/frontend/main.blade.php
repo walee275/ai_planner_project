@@ -17,7 +17,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-end" style="min-width: 67px;    background-color: rgb(141, 255, 248);" aria-labelledby="menuToggle">
                         @if (Auth::user())
-                            <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
+                           <a href="{{ route('logout') }}" class="dropdown-item">Logout</a>
                             <a href="{{ route('homepage') }}" class="dropdown-item">HomePage</a>
                         @endif
                     </div>
