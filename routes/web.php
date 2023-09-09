@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Message;
+use App\Jobs\ProcessTaskDetails;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -9,6 +10,7 @@ use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Spatie\Permission\Models\Permission;
@@ -16,7 +18,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\PlanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,4 +102,11 @@ Route::controller(PlanController::class)->middleware(Authenticate::class)->group
     Route::get('/create-plan', 'create')->name('create.plan');
     Route::get('/show-plans', 'show')->name('show.plans');
     Route::get('/api-test', 'store')->name('api-test');
+});
+
+
+Route::get('testing-job', function(){
+
+    dispatch(new ProcessTaskDetails());
+return;
 });

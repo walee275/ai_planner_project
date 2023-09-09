@@ -106,7 +106,6 @@
                 }).then(function(response) {
                     return response.json();
                 }).then(function(result) {
-                    // console.log(result);
                     btn.text('Submit');
 
                     result = result.content.replace(/\\n\\n|\r\r|\\ /g, '');
@@ -115,6 +114,7 @@
                     $("#response_container li").each(function() {
                         // Extract the text from the <b> tag
                         const taskText = $(this).find("b").text().trim();
+                        const detailedDescription = $(this).next(".detailed-desc").text().trim();
 
                         // Extract the remaining text (description)
                         const descriptionText = $(this).clone().children().remove().end()
@@ -123,7 +123,8 @@
                         // Append to the tasks array
                         tasks.push({
                             task: taskText,
-                            description: descriptionText
+                            description: descriptionText,
+                            detailedDescription:detailedDescription
                         });
                     });
                 });
@@ -136,6 +137,7 @@
 
 
             $('#createPlanButton').on('click', function() {
+                console.log(tasks);
                 const userPromptText = $('#userPrompt').val();
                 const userPromptElement = $(
                     '<h4 class="mb-3 text-white" style=""></h4>').text(
@@ -228,7 +230,9 @@
                     data: JSON.stringify(data),
                     contentType: "application/json",
                     success: function(data) {
-                        window.location = '{{ route('show.plans') }}';
+                    console.log(data);
+
+                        // window.location = '{{ route('show.plans') }}';
                         // console.log(data);
                     },
                     error: function(xhr, status, error) {

@@ -55,7 +55,7 @@
                                 <tbody>
                                     @foreach ($plan->tasks as $task)
                                         <tr class="tasks_rows" data-taskTitle="{{ $task->title }}"
-                                            data-taskDesc="{{ $task->description }}">
+                                            data-taskDesc="{{ $task->description }}" data-clearification="{{ $task->detailed_description }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->title }}</td>
                                             <td>{{ $task->created_at->format('Y-m-d,H:i:s') }}</td>
@@ -105,13 +105,16 @@
                 // alert($(this).data('tasktitle'));
                 const taskTitle = $(this).data('tasktitle');
                 const taskDesc = $(this).data('taskdesc');
+                const taskClearification = $(this).data('clearification');
 
                 let output = '<div id="single_task_show">';
                 let title =
                     `<h4 class="task_title text-white text-center" id="task_title">${taskTitle}</h4>`
                 let desc =
-                    `<div class="description p-2 py-3 text-justify" id="description">${taskDesc}</div>`
+                    `<div class="description p-2 py-3 text-justify" id="description">${taskDesc}
+                        <div class="clearification text-justify mt-3" id="clearification"><b>Clearification</b> :<br>${taskClearification}</div></div>`
 
+                let clearification = ``;
                 output += title + desc;
                 output += ' </div>';
 
