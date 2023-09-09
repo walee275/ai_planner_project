@@ -223,16 +223,16 @@
                     tasksList: tasks,
                     user: '{{ Auth::id() }}'
                 };
-                console.log(data);
+                // console.log(data);
                 $.ajax({
                     url: "{{ route('create_plan') }}", // Replace with your API URL
                     method: "POST",
                     data: JSON.stringify(data),
                     contentType: "application/json",
                     success: function(data) {
-                    console.log(data);
+                    // console.log(data);
 
-                        // window.location = '{{ route('show.plans') }}';
+                        window.location = '{{ route('show.plans') }}';
                         // console.log(data);
                     },
                     error: function(xhr, status, error) {
