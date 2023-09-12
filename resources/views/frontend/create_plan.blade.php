@@ -97,6 +97,7 @@
                 }
                 const btn = $(this);
                 $(this).text('Loading...');
+                $('#response_container').text('Loading...')
                 fetch('{{ route('request_gpt') }}', {
                     method: 'POST',
                     body: JSON.stringify(data),
@@ -114,7 +115,7 @@
                     $("#response_container li").each(function() {
                         // Extract the text from the <b> tag
                         const taskText = $(this).find("b").text().trim();
-                        const detailedDescription = $(this).next(".detailed-desc").text().trim();
+                        // const detailedDescription = $(this).next(".detailed-desc").text().trim();
 
                         // Extract the remaining text (description)
                         const descriptionText = $(this).clone().children().remove().end()
@@ -124,7 +125,7 @@
                         tasks.push({
                             task: taskText,
                             description: descriptionText,
-                            detailedDescription:detailedDescription
+                            // detailedDescription:detailedDescription
                         });
                     });
                 });

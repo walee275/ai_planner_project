@@ -3,11 +3,13 @@
 use App\Models\User;
 use App\Models\Message;
 use App\Jobs\ProcessTaskDetails;
+use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlanController;
@@ -96,7 +98,7 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
 });
 
 
-Route::controller(PlanController::class)->middleware(Authenticate::class)->group(function () {
+Route::controller(PlanController::class)->group(function () {
 
     Route::get('/', 'index')->name('homepage');
     Route::get('/create-plan', 'create')->name('create.plan');
@@ -104,9 +106,15 @@ Route::controller(PlanController::class)->middleware(Authenticate::class)->group
     Route::get('/api-test', 'store')->name('api-test');
 });
 
+Route::get('testing', function(){
 
-Route::get('testing-job', function(){
-
-    dispatch(new ProcessTaskDetails());
-return;
+    $result = OpenAI::completions()->create([
+        'model' => 'gpt-3.5-turbo',
+        // 'prompt' => 'what is your name',
+        'prompt' => 'i want to create a social media campaign to drive traffic to my website .
+        give me the plan for it like tasks and keep all the tasks in an array',
+        'max_tokens' => 4000,
+    ]);
+    dd($result);
+    return json_encode($result->choices[0]->text);
 });
