@@ -55,7 +55,8 @@
                                 <tbody>
                                     @foreach ($plan->tasks as $task)
                                         <tr class="tasks_rows" data-taskTitle="{{ $task->title }}"
-                                            data-taskDesc="{{ $task->description }}" data-clearification="{{ $task->detailed_description }}">
+                                            data-taskDesc="{{ $task->description }}"
+                                            data-clearification="{{ $task->detailed_description }}">
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $task->title }}</td>
                                             <td>{{ $task->created_at->format('Y-m-d,H:i:s') }}</td>
@@ -112,7 +113,7 @@
                     `<h4 class="task_title text-white text-center" id="task_title">${taskTitle}</h4>`
                 let desc =
                     `<div class="description p-2 py-3 text-justify" id="description">${taskDesc}
-                        <div class="clearification text-justify mt-3" id="clearification"><b>Clearification</b> :<br>${taskClearification}</div></div>`
+                        <div class="clearification text-justify mt-3" id="clearification"><br>${taskClearification}</div></div>`
 
                 let clearification = ``;
                 output += title + desc;
@@ -122,7 +123,15 @@
                 $('#data_container').find('.tasks-list-container').addClass('d-none');
 
                 $('#data_container').append(output);
+                $('#clearification ul li').each(function() {
+                    // Create a new checkbox element.
+                    var checkbox = $('<input>').attr('type', 'checkbox');
+                    checkbox.addClass('mx-2');
+                    // Prepend the checkbox to the current <li> element.
+                    $(this).prepend(checkbox);
+                });
                 $('#back_btn').text('< Back');
+
             })
 
             $('#back_btn').on('click', function(e) {

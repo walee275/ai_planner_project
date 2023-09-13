@@ -36,7 +36,7 @@ class TestJob implements ShouldQueue
             $task_title = $this->task['task_title'];
             $description = $this->task['description'];
 
-            $prompt = $task_title . $description . '.  ';
+            $prompt = $task_title . $description . '. give your response in a ul element ';
 
             $response = $this->get_task_explanation($prompt);
             $data = [

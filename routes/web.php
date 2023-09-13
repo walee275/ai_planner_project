@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PlanController;
@@ -98,7 +99,7 @@ Route::prefix('admin')->name('admin.')->middleware(Authenticate::class)->group(f
 });
 
 
-Route::controller(PlanController::class)->group(function () {
+Route::controller(PlanController::class)->middleware(Authenticate::class)->group(function () {
 
     Route::get('/', 'index')->name('homepage');
     Route::get('/create-plan', 'create')->name('create.plan');
@@ -117,4 +118,9 @@ Route::get('testing', function(){
     ]);
     dd($result);
     return json_encode($result->choices[0]->text);
+});
+
+Route::get('clear-cache', function(){
+
+    Artisan::call('cache:clear');
 });
